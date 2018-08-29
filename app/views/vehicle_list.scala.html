@@ -1,0 +1,22 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+@import vehicle.models.Vehicle
+
+
+@(organizationId: Long, user:userauth.models.User, vehicleList: List[Vehicle])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@views.html.main(messages("home.title"), Some(user)) {
+    <div class="user col-md-6 col-md-offset-3">
+        <div class="row data">
+            <div class="col-md-12">
+                <div class="row">
+                    @for(vehicleItem <- vehicleList) {
+                        <a href='@vehicle.controllers.routes.OrganizationVehicleController.find(organizationId,vehicleItem.id)' class="col-md-6"><strong>@vehicleItem.name</strong></a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -33,19 +33,12 @@ class ApplicationController @Inject() (
    *
    * @return The result to display.
    */
-  def index = silhouette.UserAwareAction.async { implicit request =>
-    // Future.successful(Ok(views.html.home(request.identity)))
-    Future.successful(Ok(views.html.test(request.identity)))
+  def index = silhouette.SecuredAction.async { implicit request =>
+    Future.successful(Ok(views.html.home(request.identity)))
   }
 
-  /**
-   * Handles the Sign Out action.
-   *
-   * @return The result to display.
-   */
-  def signOut = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    val result = Redirect(routes.ApplicationController.index())
-    silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
-    silhouette.env.authenticatorService.discard(request.authenticator, result)
+  def map1 = silhouette.SecuredAction.async { implicit request =>
+    Future.successful(Ok(views.html.draggable_1(request.identity)))
   }
+
 }

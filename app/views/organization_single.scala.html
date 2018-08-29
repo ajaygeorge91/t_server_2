@@ -1,0 +1,20 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+
+@(user:userauth.models.User, org: organization.models.Organization)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@views.html.main(messages("home.title"), Some(user)) {
+    <div class="user col-md-6 col-md-offset-3">
+        <div class="row data">
+            <div class="col-md-12">
+                <div class="row">
+                    <p class="col-md-6"><strong>org name : </strong></p><p class="col-md-6">@org.name</p>
+                    <a href="@vehicle.controllers.routes.OrganizationVehicleController.create(org.id)" class="col-md-6">add vehicle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

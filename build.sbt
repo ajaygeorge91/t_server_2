@@ -1,48 +1,75 @@
 import com.typesafe.sbt.SbtScalariform._
-
 import scalariform.formatter.preferences._
+import sbt.{Resolver, _}
 
 name := "app"
 
-version := "5.0.5"
-
-scalaVersion := "2.12.6"
-
-resolvers += Resolver.jcenterRepo
-
-resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
-
-libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette" % "5.0.5",
-  "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.5",
-  "com.mohiva" %% "play-silhouette-persistence" % "5.0.5",
-  "com.mohiva" %% "play-silhouette-crypto-jca" % "5.0.5",
-  "org.webjars" %% "webjars-play" % "2.6.3",
-  "org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery"),
-  "org.webjars" % "jquery" % "3.2.1",
-  "net.codingwell" %% "scala-guice" % "4.1.0",
-  "com.iheart" %% "ficus" % "1.4.3",
-  "com.typesafe.play" %% "play-mailer" % "6.0.1",
-  "com.typesafe.play" %% "play-mailer-guice" % "6.0.1",
-  "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.1-akka-2.5.x",
-  "com.adrianhurt" %% "play-bootstrap" % "1.4-P26-B3-SNAPSHOT",
-  "com.mohiva" %% "play-silhouette-testkit" % "5.0.5" % "test",
-
-
-  "org.apache.tinkerpop" % "gremlin-driver" % "3.3.3",
-  "com.michaelpollmeier" %% "gremlin-scala" % "3.3.3.4",
-  "org.apache.tinkerpop" % "neo4j-gremlin" % "3.3.0" exclude("com.github.jeremyh", "jBCrypt"), // travis can't find jBCrypt...
-  "org.neo4j" % "neo4j-tinkerpop-api-impl" % "0.7-3.2.3",
-
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
-
-  specs2 % Test,
-  ehcache,
-  guice,
-  filters
+lazy val commonSettings = Seq(
+  organization := "com.example",
+  version := "0.0.1",
+  scalaVersion := Version.Scala,
+  resolvers += Resolver.mavenLocal,
+  resolvers += Resolver.jcenterRepo,
+  resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
+    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
 )
 
-lazy val app = (project in file(".")).enablePlugins(PlayScala)
+lazy val commonDependencies = Seq(
+  "com.iheart" %% "ficus" % "1.4.3",
+  specs2 % Test,
+  Library.ScalaGuice,
+  Library.QuartzScheduler,
+  guice
+) ++ Seq(Library.Logging)
+
+lazy val common = (project in file("common"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= commonDependencies
+  )
+
+
+lazy val admin = (project in file("admin"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= commonDependencies ++ Library.Silhouette
+  )
+  .dependsOn(common)
+  .enablePlugins(PlayScala)
+
+
+
+lazy val database = (project in file("database"))
+  .settings(
+    commonSettings,
+    name := "database",
+    libraryDependencies ++= Seq(Library.PhantomDsl) ++ commonDependencies ++ Library.Neo4j ++ Library.GremlinScala ++ Library.JanusGraph
+  )
+
+
+lazy val auth = (project in file("userauth"))
+  .settings(
+    commonSettings,
+    name := "userauth",
+    libraryDependencies ++= commonDependencies ++ Library.Silhouette ++ Library.Web ++ Library.Mailer
+  )
+  .dependsOn(common, database)
+  .enablePlugins(PlayScala)
+
+lazy val root = (project in file("."))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      ehcache,
+      filters
+    ) ++ commonDependencies ++ Library.Web ++ Library.Mailer
+  )
+  .aggregate(common, admin, database, auth)
+  .dependsOn(common, admin, database, auth)
+  .enablePlugins(PlayScala)
+
+
 
 routesImport += "utils.route.Binders._"
 

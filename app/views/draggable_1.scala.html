@@ -1,0 +1,25 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+@import vehicle.models.Vehicle
+
+@(user:userauth.models.User)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@views.html.main(messages("home.title"), Some(user)) {
+
+
+
+<div id="map-body">
+    <div id="map"></div>
+</div>
+<div id="right-panel">
+    <p>Total Distance: <span id="total"></span></p>
+</div>
+<script src="@assets.path("javascripts/maps1.js")"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATjlj4UmkWCPLraMn6Bu2RQjhkn7Ylxnw&callback=initMap">
+</script>
+
+
+}

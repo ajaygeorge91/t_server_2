@@ -1,0 +1,26 @@
+@import play.api.data.Form
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+@import com.mohiva.play.silhouette.impl.providers.SocialProviderRegistry
+@import userauth.forms.NameForm.Data
+
+@(organizationId:Long, form: Form[Data])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@implicitFieldConstructor = @{ b3.vertical.fieldConstructor() }
+
+@views.html.main("create vehicle") {
+    <fieldset class="col-md-6 col-md-offset-3">
+        <legend>Create vehicle</legend>
+        @helper.form(action = vehicle.controllers.routes.OrganizationVehicleController.create(organizationId)) {
+            @helper.CSRF.formField
+            @b3.text(form("name"), '_hiddenLabel -> messages("name"), 'placeholder -> messages("name"), 'class -> "form-control input-lg")
+            <div class="form-group">
+                <div>
+                    <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">Create</button>
+                </div>
+            </div>
+        }
+    </fieldset>
+}

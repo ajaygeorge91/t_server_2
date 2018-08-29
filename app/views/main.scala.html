@@ -4,7 +4,7 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(title: String, user: Option[models.User] = None)(content: Html)(implicit request: RequestHeader, messages: Messages, assets: AssetsFinder, webJarsUtil: WebJarsUtil)
+@(title: String, user: Option[userauth.models.User] = None)(content: Html)(implicit request: RequestHeader, messages: Messages, assets: AssetsFinder, webJarsUtil: WebJarsUtil)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +16,7 @@
         <title>@title</title>
         <link href="//fonts.googleapis.com/css?family=Roboto|Montserrat:400,700|Open+Sans:400,300,600" rel="stylesheet">
         <link href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
+        <link href="@assets.path("styles/maps1.css")" rel="stylesheet">
         @webJarsUtil.locate("bootstrap.min.css").css()
         @webJarsUtil.locate("bootstrap-theme.min.css").css()
         <link rel="stylesheet" href="@assets.path("styles/main.css")">
@@ -46,12 +47,12 @@
                         @user.map { u =>
                             <li><a href="@controllers.routes.ApplicationController.index">@u.name</a></li>
                             @if(u.loginInfo.providerID == com.mohiva.play.silhouette.impl.providers.CredentialsProvider.ID) {
-                                <li><a href="@controllers.routes.ChangePasswordController.view">@messages("change.password")</a></li>
+                                <li><a href="@userauth.controllers.routes.ChangePasswordController.view">@messages("change.password")</a></li>
                             }
-                            <li><a href="@controllers.routes.ApplicationController.signOut">@messages("sign.out")</a></li>
+                            <li><a href="@userauth.controllers.routes.SignOutController.signOut">@messages("sign.out")</a></li>
                         }.getOrElse {
-                            <li><a href="@controllers.routes.SignInController.view">@messages("sign.in")</a></li>
-                            <li><a href="@controllers.routes.SignUpController.view">@messages("sign.up")</a></li>
+                            <li><a href="@userauth.controllers.routes.SignInController.view">@messages("sign.in")</a></li>
+                            <li><a href="@userauth.controllers.routes.SignUpController.view">@messages("sign.up")</a></li>
                         }
                     </ul>
                 </nav>

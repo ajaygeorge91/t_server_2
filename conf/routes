@@ -4,24 +4,35 @@
 
 # Home page
 GET         /                                controllers.ApplicationController.index
-GET         /signOut                         controllers.ApplicationController.signOut
-GET         /authenticate/:provider          controllers.SocialAuthController.authenticate(provider)
+GET         /map1                                controllers.ApplicationController.map1
+GET         /signOut                         userauth.controllers.SignOutController.signOut
+GET         /authenticate/:provider          userauth.controllers.SocialAuthController.authenticate(provider)
 
-GET         /signUp                          controllers.SignUpController.view
-POST        /signUp                          controllers.SignUpController.submit
+GET         /signUp                          userauth.controllers.SignUpController.view
+POST        /signUp                          userauth.controllers.SignUpController.submit
 
-GET         /signIn                          controllers.SignInController.view
-POST        /signIn                          controllers.SignInController.submit
+GET         /org/create                      organization.controllers.OrganizationController.createPage
+POST        /org/create                      organization.controllers.OrganizationController.create
+GET         /org                             organization.controllers.OrganizationController.list
+GET         /org/:organizationId             organization.controllers.OrganizationController.find(organizationId:Long)
 
-GET         /password/forgot                 controllers.ForgotPasswordController.view
-POST        /password/forgot                 controllers.ForgotPasswordController.submit
-GET         /password/reset/:token           controllers.ResetPasswordController.view(token: java.util.UUID)
-POST        /password/reset/:token           controllers.ResetPasswordController.submit(token: java.util.UUID)
-GET         /password/change                 controllers.ChangePasswordController.view
-POST        /password/change                 controllers.ChangePasswordController.submit
+GET         /org/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.createPage(organizationId:Long)
+POST        /org/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
+GET         /org/:organizationId/vehicle                         vehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
+GET         /org/:organizationId/vehicle/:vehicleId              vehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
 
-GET         /account/email/:email            controllers.ActivateAccountController.send(email: String)
-GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
+GET         /signIn                          userauth.controllers.SignInController.view
+POST        /signIn                          userauth.controllers.SignInController.submit
+
+GET         /password/forgot                 userauth.controllers.ForgotPasswordController.view
+POST        /password/forgot                 userauth.controllers.ForgotPasswordController.submit
+GET         /password/reset/:token           userauth.controllers.ResetPasswordController.view(token: java.util.UUID)
+POST        /password/reset/:token           userauth.controllers.ResetPasswordController.submit(token: java.util.UUID)
+GET         /password/change                 userauth.controllers.ChangePasswordController.view
+POST        /password/change                 userauth.controllers.ChangePasswordController.submit
+
+GET         /account/email/:email            userauth.controllers.ActivateAccountController.send(email: String)
+GET         /account/activate/:token         userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)

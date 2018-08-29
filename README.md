@@ -1,39 +1,39 @@
-Silhouette Seed Template
-=====================================
 
-The Silhouette Seed project is an Activator template which shows how [Silhouette](https://github.com/mohiva/play-silhouette) can be implemented in a Play Framework application. It's a starting point which can be extended to fit your needs.
 
-## Example
+sudo docker run --name cassandra2 -m 800m -d -e CASSANDRA_START_RPC=true -p 9160:9160 -p 9042:9042 -p 7199:7199 -p 7001:7001 -p 7000:7000  -d cassandra
+sudo docker run -d --name es2 -m 800m -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.3.2
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-(The "Build App" phase will take a few minutes)
 
-Or you can find a running example of this template under the following URL: https://play-silhouette-seed.herokuapp.com/
 
-## Features
 
-* Sign Up
-* Sign In (Credentials)
-* Social Auth (Facebook, Google+, VK, Twitter, Xing, Yahoo)
-* Dependency Injection with Guice
-* Publishing Events
-* Avatar service
-* Remember me functionality
-* Password reset/change functionality
-* Account activation functionality
-* Email sending and auth token cleanup
-* [Security headers](https://www.playframework.com/documentation/2.4.x/SecurityHeaders)
-* [CSRF Protection](https://www.playframework.com/documentation/2.4.x/ScalaCsrf)
 
-## Documentation
 
-Consult the [Silhouette documentation](http://silhouette.mohiva.com/docs) for more information. If you need help with the integration of Silhouette into your project, don't hesitate and ask questions in our [mailing list](https://groups.google.com/forum/#!forum/play-silhouette) or on [Stack Overflow](http://stackoverflow.com/questions/tagged/playframework).
 
-## Activator
 
-See https://typesafe.com/activator/template/play-silhouette-seed
+conf = new BaseConfiguration()
+conf.setProperty("storage.backend", "cassandra")
+conf.setProperty("storage.hostname", "127.0.0.1")
 
-# License
+janusGraph = JanusGraphFactory.open(conf)
 
-The code is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
+janusGraph.io(graphml()).writeGraph("export.xml")
+
+
+
+
+
+
+conf = new BaseConfiguration()
+conf.setProperty("storage.backend", "cassandra")
+conf.setProperty("storage.hostname", "127.0.0.1")
+conf.setProperty("index.search.backend", "elasticsearch")
+conf.setProperty("index.search.hostname", "127.0.0.1")
+
+graph = JanusGraphFactory.open(conf)
+
+g = graph.traversal()
+
+graph.io(graphml()).writeGraph("export.xml")
+
+
