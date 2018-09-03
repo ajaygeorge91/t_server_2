@@ -19,11 +19,6 @@ object Library {
     "com.michaelpollmeier" %% "gremlin-scala" % "3.3.3.4"
   )
 
-  final val Neo4j = Seq(
-    "org.apache.tinkerpop" % "neo4j-gremlin" % "3.3.0" exclude("com.github.jeremyh", "jBCrypt"), // travis can't find jBCrypt...
-    "org.neo4j" % "neo4j-tinkerpop-api-impl" % "0.7-3.2.3"
-  )
-
   final val Web = Seq(
     "org.webjars" %% "webjars-play" % "2.6.3",
     "org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery"),

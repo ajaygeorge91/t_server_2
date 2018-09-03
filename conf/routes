@@ -4,7 +4,8 @@
 
 # Home page
 GET         /                                controllers.ApplicationController.index
-GET         /map1                                controllers.ApplicationController.map1
+GET         /map1                            controllers.ApplicationController.map1
+GET         /map2                            controllers.ApplicationController.map2
 GET         /signOut                         userauth.controllers.SignOutController.signOut
 GET         /authenticate/:provider          userauth.controllers.SocialAuthController.authenticate(provider)
 

@@ -13,13 +13,13 @@ import scala.util.{ Failure, Success, Try }
 
 abstract class BaseRepo @Inject() ()(implicit ec: DatabaseExecutionContext) extends LazyLogging {
 
-  //  val location: String = "/tmp/neo4j"
-  //  val neoGraph: Neo4jGraph = Neo4jGraph.open(location)
-  val janusGraph: JanusGraph = JanusGraphFactory.build()
-    .set("storage.backend", "cassandra")
-    .set("storage.hostname", "127.0.0.1")
+  val gremlinGraph: JanusGraph = JanusGraphFactory.build()
+    .set("storage.backend", "inmemory")
+    //    .set("storage.backend", "cassandra")
+    //    .set("storage.hostname", "127.0.0.1")
     .open
-  implicit val graph: ScalaGraph = janusGraph.asScala
+
+  implicit val graph: ScalaGraph = gremlinGraph.asScala
 
   protected def getVertex(vertexId: Long): Try[Vertex] = {
     graph.V(vertexId).headOption() match {

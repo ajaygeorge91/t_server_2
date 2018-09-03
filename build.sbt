@@ -30,7 +30,7 @@ lazy val common = (project in file("common"))
   )
 
 
-lazy val admin = (project in file("admin"))
+lazy val geodata = (project in file("geodata"))
   .settings(
     commonSettings,
     libraryDependencies ++= commonDependencies ++ Library.Silhouette
@@ -39,34 +39,24 @@ lazy val admin = (project in file("admin"))
   .enablePlugins(PlayScala)
 
 
-
 lazy val database = (project in file("database"))
   .settings(
     commonSettings,
     name := "database",
-    libraryDependencies ++= Seq(Library.PhantomDsl) ++ commonDependencies ++ Library.Neo4j ++ Library.GremlinScala ++ Library.JanusGraph
+    libraryDependencies ++= Seq(Library.PhantomDsl) ++ commonDependencies ++ Library.GremlinScala ++ Library.JanusGraph
   )
 
 
-lazy val auth = (project in file("userauth"))
-  .settings(
-    commonSettings,
-    name := "userauth",
-    libraryDependencies ++= commonDependencies ++ Library.Silhouette ++ Library.Web ++ Library.Mailer
-  )
-  .dependsOn(common, database)
-  .enablePlugins(PlayScala)
-
-lazy val root = (project in file("."))
+lazy val app = (project in file("."))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
       ehcache,
       filters
-    ) ++ commonDependencies ++ Library.Web ++ Library.Mailer
+    ) ++ commonDependencies ++ Library.Silhouette ++ Library.Web ++ Library.Mailer
   )
-  .aggregate(common, admin, database, auth)
-  .dependsOn(common, admin, database, auth)
+  .aggregate(common, geodata, database)
+  .dependsOn(common, geodata, database)
   .enablePlugins(PlayScala)
 
 

@@ -37,8 +37,12 @@ class ApplicationController @Inject() (
     Future.successful(Ok(views.html.home(request.identity)))
   }
 
-  def map1 = silhouette.SecuredAction.async { implicit request =>
+  def map1 = silhouette.UserAwareAction.async { implicit request =>
     Future.successful(Ok(views.html.draggable_1(request.identity)))
+  }
+
+  def map2 = silhouette.UserAwareAction.async { implicit request =>
+    Future.successful(Ok(views.html.display_1(request.identity)))
   }
 
 }
