@@ -45,7 +45,6 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[UserDAO].to[UserDAOImpl]
     bind[CacheLayer].to[PlayCacheLayer]
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
-    bind[FingerprintGenerator].toInstance(new DefaultFingerprintGenerator(false))
     bind[EventBus].toInstance(EventBus())
     bind[Clock].toInstance(Clock())
 
@@ -67,24 +66,17 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   /**
    * Provides the Silhouette environment.
    *
-   * @param userService The user service implementation.
+   * @param userService          The user service implementation.
    * @param authenticatorService The authentication service implementation.
-   * @param eventBus The event bus instance.
+   * @param eventBus             The event bus instance.
    * @return The Silhouette environment.
    */
   @Provides
   def provideEnvironment(
     userService: UserService,
     authenticatorService: AuthenticatorService[JWTAuthenticator],
-    eventBus: EventBus): Environment[DefaultEnv] = {
-
-    Environment[DefaultEnv](
-      userService,
-      authenticatorService,
-      Seq(),
-      eventBus
-    )
-  }
+    eventBus: EventBus): Environment[DefaultEnv] =
+    Environment[DefaultEnv](userService, authenticatorService, Seq(), eventBus)
 
   /**
    * Provides the social provider registry.
@@ -163,10 +155,10 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   /**
    * Provides the authenticator service.
    *
-   * @param crypter The crypter implementation.
-   * @param idGenerator The ID generator implementation.
-   * @param configuration The Play configuration.
-   * @param clock The clock instance.
+   * @param crypter              The crypter implementation.
+   * @param idGenerator          The ID generator implementation.
+   * @param configuration        The Play configuration.
+   * @param clock                The clock instance.
    * @return The authenticator service.
    */
   @Provides
@@ -175,12 +167,10 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     idGenerator: IDGenerator,
     configuration: Configuration,
     clock: Clock): AuthenticatorService[JWTAuthenticator] = {
-
     val settings = JWTAuthenticatorSettings(sharedSecret = configuration.get[String]("play.http.secret.key"))
     val encoder = new CrypterAuthenticatorEncoder(crypter)
 
     new JWTAuthenticatorService(settings, None, encoder, idGenerator, clock)
-
   }
 
   /**

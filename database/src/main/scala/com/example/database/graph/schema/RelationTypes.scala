@@ -14,6 +14,7 @@ object RelationTypes {
   object EdgeLabels {
 
     final val HasLoginInfo: String = "hasLoginInfo"
+    final val HasPasswordInfo: String = "hasPasswordInfo"
     final val member_of_organization: String = "member_of_organization"
     final val has_vehicle: String = "has_vehicle"
 
