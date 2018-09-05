@@ -6,34 +6,30 @@
 GET         /                                controllers.ApplicationController.index
 GET         /map1                            controllers.ApplicationController.map1
 GET         /map2                            controllers.ApplicationController.map2
-GET         /signOut                         userauth.controllers.SignOutController.signOut
-GET         /authenticate/:provider          userauth.controllers.SocialAuthController.authenticate(provider)
 
-GET         /signUp                          userauth.controllers.SignUpController.view
-POST        /signUp                          userauth.controllers.SignUpController.submit
+GET         /api/auth/signOut                         userauth.controllers.SignOutController.signOut
 
-GET         /org/create                      organization.controllers.OrganizationController.createPage
-POST        /org/create                      organization.controllers.OrganizationController.create
-GET         /org                             organization.controllers.OrganizationController.list
-GET         /org/:organizationId             organization.controllers.OrganizationController.find(organizationId:Long)
+POST        /api/auth/signIn                 userauth.controllers.SignInController.submit
+POST        /api/auth/signUp                 userauth.controllers.SignUpController.submit
+POST        /api/auth/facebook               userauth.controllers.SocialAuthController.authenticateFB()
+POST        /api/auth/:provider              userauth.controllers.SocialAuthController.authenticate(provider :String)
 
-GET         /org/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.createPage(organizationId:Long)
-POST        /org/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
-GET         /org/:organizationId/vehicle                         vehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
-GET         /org/:organizationId/vehicle/:vehicleId              vehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
+POST        /api/auth/password/forgot                 userauth.controllers.ForgotPasswordController.submit
+POST        /api/auth/password/reset/:token           userauth.controllers.ResetPasswordController.submit(token: java.util.UUID)
+POST        /api/auth/password/change                 userauth.controllers.ChangePasswordController.submit
 
-GET         /signIn                          userauth.controllers.SignInController.view
-POST        /signIn                          userauth.controllers.SignInController.submit
+GET         /api/auth/account/email/:email            userauth.controllers.ActivateAccountController.send(email: String)
+GET         /api/auth/account/activate/:token         userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
 
-GET         /password/forgot                 userauth.controllers.ForgotPasswordController.view
-POST        /password/forgot                 userauth.controllers.ForgotPasswordController.submit
-GET         /password/reset/:token           userauth.controllers.ResetPasswordController.view(token: java.util.UUID)
-POST        /password/reset/:token           userauth.controllers.ResetPasswordController.submit(token: java.util.UUID)
-GET         /password/change                 userauth.controllers.ChangePasswordController.view
-POST        /password/change                 userauth.controllers.ChangePasswordController.submit
 
-GET         /account/email/:email            userauth.controllers.ActivateAccountController.send(email: String)
-GET         /account/activate/:token         userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
+
+POST        /api/organization/create                      organization.controllers.OrganizationController.create
+GET         /api/organization                             organization.controllers.OrganizationController.list
+GET         /api/organization/:organizationId             organization.controllers.OrganizationController.find(organizationId:Long)
+
+POST        /api/organization/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
+GET         /api/organization/:organizationId/vehicle                         vehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
+GET         /api/organization/:organizationId/vehicle/:vehicleId              vehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)

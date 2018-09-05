@@ -51,17 +51,13 @@ class UserServiceImpl @Inject() (userDAO: UserDAO)(implicit ex: ServiceExecution
     userDAO.find(profile.loginInfo).flatMap {
       case Some(user) => // Update user with profile
         userDAO.update(user.copy(
-          firstName = profile.firstName,
-          lastName = profile.lastName,
-          fullName = profile.fullName,
+          name = profile.fullName,
           email = profile.email,
           avatarURL = profile.avatarURL
         ))
       case None => // Insert a new user
         userDAO.create(CreateUser(
-          firstName = profile.firstName,
-          lastName = profile.lastName,
-          fullName = profile.fullName,
+          name = profile.fullName,
           email = profile.email,
           avatarURL = profile.avatarURL
         ), profile.loginInfo)

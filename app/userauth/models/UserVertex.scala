@@ -8,9 +8,7 @@ import org.joda.time.DateTime
 @label(VertexLabels.User)
 final case class UserVertex(
                              @id id: Long,
-                             firstName: Option[String],
-                             lastName: Option[String],
-                             fullName: Option[String],
+                             name: Option[String],
                              email: Option[String],
                              avatarURL: Option[String],
                              activated: Boolean,
@@ -22,9 +20,7 @@ object UserVertex {
   def create(user: CreateUser):UserVertex =
     UserVertex(
       id = 0L,
-      firstName = user.firstName,
-      lastName = user.lastName,
-      fullName = user.fullName,
+      name = user.name,
       email = user.email,
       avatarURL = user.avatarURL,
       activated = false,
@@ -35,9 +31,7 @@ object UserVertex {
   def update(userVertex: UserVertex, user: User):UserVertex =
     UserVertex(
       id = user.id,
-      firstName = user.firstName,
-      lastName = user.lastName,
-      fullName = user.fullName,
+      name = user.name,
       email = user.email,
       avatarURL = user.avatarURL,
       activated = user.activated,
@@ -49,9 +43,7 @@ object UserVertex {
     User(
       id = userVertex.id,
       loginInfo = loginInfo,
-      firstName = userVertex.firstName,
-      lastName = userVertex.lastName,
-      fullName = userVertex.fullName,
+      name = userVertex.name,
       email = userVertex.email,
       avatarURL = userVertex.avatarURL,
       activated = userVertex.activated,

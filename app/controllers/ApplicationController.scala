@@ -1,12 +1,11 @@
 package controllers
 
+import com.mohiva.play.silhouette.api.Silhouette
+import common.BaseApplicationController
 import javax.inject.Inject
-
-import com.mohiva.play.silhouette.api.actions.SecuredRequest
-import com.mohiva.play.silhouette.api.{ LogoutEvent, Silhouette }
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
-import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents }
+import play.api.mvc.ControllerComponents
 import utils.auth.DefaultEnv
 
 import scala.concurrent.Future
@@ -26,15 +25,10 @@ class ApplicationController @Inject() (
   implicit
   webJarsUtil: WebJarsUtil,
   assets: AssetsFinder
-) extends AbstractController(components) with I18nSupport {
+) extends BaseApplicationController(components) with I18nSupport {
 
-  /**
-   * Handles the index action.
-   *
-   * @return The result to display.
-   */
-  def index = silhouette.SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.home(request.identity)))
+  def index = silhouette.UserAwareAction.async { implicit request =>
+    Future.successful(Ok("working...?!"))
   }
 
   def map1 = silhouette.UserAwareAction.async { implicit request =>

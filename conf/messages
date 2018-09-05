@@ -65,6 +65,7 @@ password.reset = We have reset your password. You can now sign in with your cred
 account.activated = Your account is now activated! Please sign in to use your new account.
 password.changed = Your password has been changed.
 
+
 google = Google
 facebook = Facebook
 twitter = Twitter
@@ -85,6 +86,7 @@ email.sign.up.html.text = Please follow <a href="{0}">this link</a> to confirm a
 email.sign.up.txt.text = Please follow the link to confirm and activate your new account: {0}
 
 # Already Signed Up
+email.already.exist = You already have an account with that email. Please signIn
 email.already.signed.up.subject = Welcome
 email.already.signed.up.hello = Hello {0},
 email.already.signed.up.html.text = You already have an account registered. Please follow <a href="{0}">this link</a> to sign in into your account.

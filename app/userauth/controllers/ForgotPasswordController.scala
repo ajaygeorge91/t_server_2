@@ -2,12 +2,12 @@ package userauth.controllers
 
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
-import controllers.AssetsFinder
+import common.BaseApplicationController
 import javax.inject.Inject
-import org.webjars.play.WebJarsUtil
 import play.api.i18n.{ I18nSupport, Messages }
+import play.api.libs.json.Json
 import play.api.libs.mailer.{ Email, MailerClient }
-import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents, Request }
+import play.api.mvc.ControllerComponents
 import userauth.forms.ForgotPasswordForm
 import userauth.services.{ AuthTokenService, UserService }
 import utils.auth.DefaultEnv
@@ -22,8 +22,6 @@ import scala.concurrent.{ ExecutionContext, Future }
  * @param userService      The user service implementation.
  * @param authTokenService The auth token service implementation.
  * @param mailerClient     The mailer client.
- * @param webJarsUtil      The webjar util.
- * @param assets           The Play assets finder.
  * @param ex               The execution context.
  */
 class ForgotPasswordController @Inject() (
@@ -34,19 +32,8 @@ class ForgotPasswordController @Inject() (
   mailerClient: MailerClient
 )(
   implicit
-  webJarsUtil: WebJarsUtil,
-  assets: AssetsFinder,
   ex: ExecutionContext
-) extends AbstractController(components) with I18nSupport {
-
-  /**
-   * Views the `Forgot Password` page.
-   *
-   * @return The result to display.
-   */
-  def view = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(views.html.forgotPassword(ForgotPasswordForm.form)))
-  }
+) extends BaseApplicationController(components) with I18nSupport {
 
   /**
    * Sends an email with password reset instructions.
@@ -56,16 +43,17 @@ class ForgotPasswordController @Inject() (
    *
    * @return The result to display.
    */
-  def submit = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
+
+  def submit = silhouette.UnsecuredAction.async { implicit request =>
     ForgotPasswordForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.forgotPassword(form))),
+      form => Future.successful(BadRequest(Json.obj("errors" -> form.errors.map { _.messages.mkString(", ") }))),
       email => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, email)
-        val result = Redirect(routes.SignInController.view()).flashing("info" -> Messages("reset.email.sent"))
         userService.retrieve(loginInfo).flatMap {
           case Some(user) if user.email.isDefined =>
             authTokenService.create(user.id).map { authToken =>
-              val url = routes.ResetPasswordController.view(authToken.id).absoluteURL()
+              val url = "http:// TODO "
+              // TODO
 
               mailerClient.send(Email(
                 subject = Messages("email.reset.password.subject"),
@@ -74,11 +62,12 @@ class ForgotPasswordController @Inject() (
                 bodyText = Some(views.txt.emails.resetPassword(user, url).body),
                 bodyHtml = Some(views.html.emails.resetPassword(user, url).body)
               ))
-              result
+              success(Messages("reset.email.sent"))
             }
-          case None => Future.successful(result)
+          case _ => Future.successful(Ok)
         }
       }
     )
   }
+
 }

@@ -1,6 +1,7 @@
 package organization.models
 
 import models.{ Address, Geo }
+import play.api.libs.json.{ Json, OFormat }
 
 final case class CreateOrganization(
   name: String,
@@ -13,3 +14,7 @@ final case class CreateOrganization(
   publicAccess: Boolean
 )
 
+object CreateOrganization {
+
+  implicit val jsonFormat: OFormat[CreateOrganization] = Json.format[CreateOrganization]
+}

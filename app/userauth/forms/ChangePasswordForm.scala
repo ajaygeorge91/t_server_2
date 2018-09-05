@@ -12,7 +12,11 @@ object ChangePasswordForm {
    * A play framework form.
    */
   val form = Form(tuple(
-    "current-password" -> nonEmptyText,
-    "new-password" -> nonEmptyText
+    "currentPassword" -> nonEmptyText,
+    "newPassword" -> nonEmptyText
   ))
+
+  case class Data(
+    currentPassword: String,
+    newPassword: String)
 }

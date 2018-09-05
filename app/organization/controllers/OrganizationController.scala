@@ -2,17 +2,18 @@ package organization.controllers
 
 import com.mohiva.play.silhouette.api.Silhouette
 import com.typesafe.scalalogging.LazyLogging
+import common.BaseApplicationController
 import controllers.AssetsFinder
 import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import organization.OrganizationService
 import organization.models.CreateOrganization
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import userauth.forms.NameForm
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.auth.DefaultEnv
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.util.control.NonFatal
 
 class OrganizationController @Inject() (
   components: ControllerComponents,
@@ -23,44 +24,32 @@ class OrganizationController @Inject() (
   webJarsUtil: WebJarsUtil,
   assets: AssetsFinder,
   executionContext: ExecutionContext,
-) extends AbstractController(components) with I18nSupport with LazyLogging {
+) extends BaseApplicationController(components) with I18nSupport with LazyLogging {
 
   def list: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     organizationService.list(request.identity.id).map{ list =>
-      Ok(views.html.organization_list(request.identity,list))
+      success(list)
+    } recover {
+      case NonFatal(e)               => failure(e)
     }
   }
 
   def find(organizationId:Long): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     organizationService.find(organizationId).map {
-      case Some(organization) => Ok(views.html.organization_single(request.identity, organization))
-      case None => NotFound
+      case Some(vehicle) =>success(vehicle)
+      case None => notFound(s"Can't find organizationId with Id : $organizationId")
+    } recover {
+      case NonFatal(e)               => failure(e)
     }
   }
 
-  def createPage: Action[AnyContent] = silhouette.SecuredAction { implicit request =>
-    Ok(views.html.organization_create(NameForm.form))
+  def create: Action[CreateOrganization] = silhouette.SecuredAction.async(parse.json[CreateOrganization]) { implicit request =>
+    organizationService.create(request.identity.id, request.body).map { org =>
+      success(org)
+    } recover {
+      case NonFatal(e) => failure(e)
+    }
   }
 
-  def create: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
-    NameForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.organization_create(form))),
-      data => {
-        val org = CreateOrganization(
-          name = data.name,
-          image = None,
-          description = None,
-          address = None,
-          geo = None,
-          email = None,
-          telephone = None,
-          publicAccess = true
-        )
-        organizationService.create(request.identity.id, org).map { org =>
-          Ok(views.html.organization_single(request.identity, org))
-        }
-      }
-    )
-  }
 
 }

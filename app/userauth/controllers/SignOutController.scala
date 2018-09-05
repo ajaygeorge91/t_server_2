@@ -2,11 +2,10 @@ package userauth.controllers
 
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.{ LogoutEvent, Silhouette }
-import controllers.AssetsFinder
+import common.BaseApplicationController
 import javax.inject.Inject
-import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
-import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents }
+import play.api.mvc.{ Action, AnyContent, ControllerComponents }
 import utils.auth.DefaultEnv
 
 /**
@@ -14,26 +13,20 @@ import utils.auth.DefaultEnv
  *
  * @param components  The Play controller components.
  * @param silhouette  The Silhouette stack.
- * @param webJarsUtil The webjar util.
- * @param assets      The Play assets finder.
  */
 class SignOutController @Inject() (
   components: ControllerComponents,
   silhouette: Silhouette[DefaultEnv]
-)(
-  implicit
-  webJarsUtil: WebJarsUtil,
-  assets: AssetsFinder
-) extends AbstractController(components) with I18nSupport {
+) extends BaseApplicationController(components) with I18nSupport {
 
   /**
    * Handles the Sign Out action.
    *
    * @return The result to display.
    */
-  def signOut = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    val result = Redirect(controllers.routes.ApplicationController.index())
+  def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
-    silhouette.env.authenticatorService.discard(request.authenticator, result)
+    silhouette.env.authenticatorService.discard(request.authenticator, success("Logged out"))
   }
+
 }

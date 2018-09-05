@@ -14,4 +14,5 @@ object ResetPasswordForm {
   val form = Form(
     "password" -> nonEmptyText
   )
+
 }

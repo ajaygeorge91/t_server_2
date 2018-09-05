@@ -5,10 +5,11 @@ import java.util.UUID
 
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
+import common.BaseApplicationController
 import javax.inject.Inject
 import play.api.i18n.{ I18nSupport, Messages }
 import play.api.libs.mailer.{ Email, MailerClient }
-import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents, Request }
+import play.api.mvc.{ AnyContent, ControllerComponents, Request }
 import userauth.services.{ AuthTokenService, UserService }
 import utils.auth.DefaultEnv
 
@@ -33,7 +34,7 @@ class ActivateAccountController @Inject() (
 )(
   implicit
   ex: ExecutionContext
-) extends AbstractController(components) with I18nSupport {
+) extends BaseApplicationController(components) with I18nSupport {
 
   /**
    * Sends an account activation email to the user with the given email.
@@ -44,7 +45,7 @@ class ActivateAccountController @Inject() (
   def send(email: String) = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     val decodedEmail = URLDecoder.decode(email, "UTF-8")
     val loginInfo = LoginInfo(CredentialsProvider.ID, decodedEmail)
-    val result = Redirect(routes.SignInController.view()).flashing("info" -> Messages("activation.email.sent", decodedEmail))
+    val result = success(Messages("activation.email.sent", decodedEmail))
 
     userService.retrieve(loginInfo).flatMap {
       case Some(user) if !user.activated =>
@@ -75,11 +76,11 @@ class ActivateAccountController @Inject() (
       case Some(authToken) => userService.retrieve(authToken.userID).flatMap {
         case Some(user) if user.loginInfo.providerID == CredentialsProvider.ID =>
           userService.update(user.copy(activated = true)).map { _ =>
-            Redirect(routes.SignInController.view()).flashing("success" -> Messages("account.activated"))
+            success(Messages("account.activated"))
           }
-        case _ => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
+        case _ => Future.successful(failure(Messages("invalid.activation.link")))
       }
-      case None => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
+      case None => Future.successful(failure(Messages("invalid.activation.link")))
     }
   }
 }

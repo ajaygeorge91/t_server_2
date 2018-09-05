@@ -14,9 +14,8 @@ import scala.util.{ Failure, Success, Try }
 abstract class BaseRepo @Inject() ()(implicit ec: DatabaseExecutionContext) extends LazyLogging {
 
   val gremlinGraph: JanusGraph = JanusGraphFactory.build()
-    .set("storage.backend", "inmemory")
-    //    .set("storage.backend", "cassandra")
-    //    .set("storage.hostname", "127.0.0.1")
+    .set("storage.backend", "cassandra")
+    .set("storage.hostname", "127.0.0.1")
     .open
 
   implicit val graph: ScalaGraph = gremlinGraph.asScala

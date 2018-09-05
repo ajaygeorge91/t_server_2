@@ -1,8 +1,13 @@
 package userauth.models
 
+import play.api.libs.json.{ Json, OFormat }
+
 case class CreateUser(
-  firstName: Option[String],
-  lastName: Option[String],
-  fullName: Option[String],
+  name: Option[String],
   email: Option[String],
   avatarURL: Option[String])
+
+object CreateUser {
+
+  implicit val jsonFormat: OFormat[CreateUser] = Json.format[CreateUser]
+}

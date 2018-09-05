@@ -58,6 +58,7 @@ class UserDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends Ba
       createdUserVertex --- EdgeLabels.HasLoginInfo --> createdLoginInfoVertex
       graph.tx.commit()
 
+      logger.error("Created")
       val createdLoginInfo = createdLoginInfoVertex.toCC[LoginInfoVertex]
       val createdUser = createdUserVertex.toCC[UserVertex]
       UserVertex.toUser(createdUser, LoginInfoVertex.toLoginInfo(createdLoginInfo))

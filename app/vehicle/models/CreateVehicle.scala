@@ -1,6 +1,7 @@
 package vehicle.models
 
 import models.{ Address, Geo }
+import play.api.libs.json.{ Json, OFormat }
 
 final case class CreateVehicle(
   name: String,
@@ -14,3 +15,7 @@ final case class CreateVehicle(
   vehicleMode: String = Mode.OWNS
 )
 
+object CreateVehicle {
+
+  implicit val jsonFormat: OFormat[CreateVehicle] = Json.format[CreateVehicle]
+}
