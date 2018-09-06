@@ -11,6 +11,6 @@ final case class OrganizationVehicle(
 
 object OrganizationVehicle {
 
-  val mode: Key[String] = Key(EdgePropertyKeys.Role)
+  val mode: Key[String] = Key(EdgePropertyKeys.Mode)
 
 }

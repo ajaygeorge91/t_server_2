@@ -26,7 +26,9 @@ import scala.concurrent.{ Future, Promise }
 /**
  * The DAO to store the password information.
  */
-class PasswordInfoDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends BaseRepo with InMemoryAuthInfoDAO[PasswordInfo] {
+class PasswordInfoDAOImpl @Inject() ()(implicit databaseExecutionContext: DatabaseExecutionContext)
+  extends InMemoryAuthInfoDAO[PasswordInfo]
+  with BaseRepo {
 
   /**
    * Finds the auth info which is linked with the specified login info.

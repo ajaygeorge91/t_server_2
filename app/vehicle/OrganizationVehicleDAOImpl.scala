@@ -90,7 +90,10 @@ class OrganizationVehicleDAOImpl @Inject() ()(implicit ec: DatabaseExecutionCont
         models.VehicleVertex.toVehicle(vehicleV.toCC[models.VehicleVertex])
       }
     } map {
-      case Failure(_) => p.success(None)
+      case Failure(e) => {
+        logger.error(e.getMessage, e)
+        p.success(None)
+      }
       case Success(value) => p.success(Some(value))
     }
     p.future

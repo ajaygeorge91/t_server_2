@@ -14,7 +14,7 @@ import scala.concurrent.{ Future, Promise }
 /**
  * Give access to the user object.
  */
-class UserDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends BaseRepo with UserDAO {
+class UserDAOImpl @Inject() ()(implicit databaseExecutionContext: DatabaseExecutionContext) extends BaseRepo with UserDAO {
 
   /**
    * Finds a user by its login info.

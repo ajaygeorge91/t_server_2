@@ -23,11 +23,11 @@ GET         /api/auth/account/activate/:token         userauth.controllers.Activ
 
 
 
-POST        /api/organization/create                      organization.controllers.OrganizationController.create
+POST        /api/organization                      organization.controllers.OrganizationController.create
 GET         /api/organization                             organization.controllers.OrganizationController.list
 GET         /api/organization/:organizationId             organization.controllers.OrganizationController.find(organizationId:Long)
 
-POST        /api/organization/:organizationId/vehicle/create                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
+POST        /api/organization/:organizationId/vehicle                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
 GET         /api/organization/:organizationId/vehicle                         vehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
 GET         /api/organization/:organizationId/vehicle/:vehicleId              vehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
 

@@ -8,15 +8,16 @@ import org.janusgraph.core.{ JanusGraph, JanusGraphFactory }
 import organization.models.{ Role, UserOrganization }
 import utils.exceptions.{ NoPermissionForRole, VertexNotFound }
 import utils.executioncontexts.DatabaseExecutionContext
+import vehicle.models.OrganizationVehicle
 
 import scala.util.{ Failure, Success, Try }
 
-abstract class BaseRepo @Inject() ()(implicit ec: DatabaseExecutionContext) extends LazyLogging {
+trait BaseRepo extends LazyLogging {
 
   val gremlinGraph: JanusGraph = JanusGraphFactory.build()
-    .set("storage.backend", "inmemory")
-    //    .set("storage.backend", "cassandrathrift")
-    //    .set("storage.hostname", "127.0.0.1")
+    //    .set("storage.backend", "inmemory")
+    .set("storage.backend", "cassandra")
+    .set("storage.hostname", "127.0.0.1")
     .open
 
   implicit val graph: ScalaGraph = gremlinGraph.asScala
@@ -46,7 +47,7 @@ abstract class BaseRepo @Inject() ()(implicit ec: DatabaseExecutionContext) exte
 
     organizationVertex.outE(EdgeLabels.has_vehicle)
       .where(_.otherV().hasId(vehicleVertex.id())).headOption() match {
-        case Some(edge) if containsMode(edge.value2[String](UserOrganization.role)) =>
+        case Some(edge) if containsMode(edge.value2[String](OrganizationVehicle.mode)) =>
           Success(edge)
         case None => Failure(NoPermissionForRole(s"You don't have permission"))
       }
