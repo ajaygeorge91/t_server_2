@@ -11,6 +11,7 @@ object Library {
   final val JanusGraph = Seq(
     "janusgraph-core",
     "janusgraph-cassandra",
+    "janusgraph-cql",
     "janusgraph-es"
   ).map("org.janusgraph" % _ % Version.JanusGraph)
 

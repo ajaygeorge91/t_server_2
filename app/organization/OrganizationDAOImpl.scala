@@ -1,7 +1,7 @@
 package organization
 
 import com.example.database.graph.schema.RelationTypes.EdgeLabels
-import common.BaseRepo
+import common.{ BaseRepo, UserOrganizationHelper }
 import gremlin.scala._
 import javax.inject.Inject
 import organization.models._
@@ -14,7 +14,10 @@ import scala.util.{ Failure, Success, Try }
 /**
  * Give access to the user object.
  */
-class OrganizationDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends BaseRepo with OrganizationDAO {
+class OrganizationDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext)
+  extends BaseRepo
+  with OrganizationDAO
+  with UserOrganizationHelper {
 
   override def list(userID: Long): Future[List[Organization]] = {
     Future {

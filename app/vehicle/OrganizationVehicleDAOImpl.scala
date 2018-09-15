@@ -1,7 +1,7 @@
 package vehicle
 
 import com.example.database.graph.schema.RelationTypes.EdgeLabels
-import common.BaseRepo
+import common.{ BaseRepo, OrganizationVehicleHelper, UserOrganizationHelper }
 import gremlin.scala._
 import javax.inject.Inject
 import organization.models.Role
@@ -14,7 +14,11 @@ import scala.util.{ Failure, Success, Try }
 /**
  * Give access to the user object.
  */
-class OrganizationVehicleDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends BaseRepo with OrganizationVehicleDAO {
+class OrganizationVehicleDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext)
+  extends BaseRepo
+  with OrganizationVehicleDAO
+  with UserOrganizationHelper
+  with OrganizationVehicleHelper {
 
   override def create(userId: Long, organizationId: Long, createVehicle: CreateVehicle): Future[models.Vehicle] = {
 
