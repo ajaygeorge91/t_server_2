@@ -14,7 +14,7 @@ trait BaseRepo extends LazyLogging {
   implicit val dbExecutionContext: DatabaseExecutionContext = implicitly
 
   val gremlinGraph: JanusGraph = JanusGraphFactory.build()
-    //    .set("storage.backend", "inmemory")
+    //.set("storage.backend", "inmemory")
     .set("storage.backend", "cql")
     .set("storage.hostname", "127.0.0.1")
     .open
