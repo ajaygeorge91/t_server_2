@@ -1,4 +1,4 @@
-package vehicle.models
+package organizationvehicle.models
 
 import com.example.database.graph.schema.RelationTypes.EdgePropertyKeys
 import gremlin.scala.Key

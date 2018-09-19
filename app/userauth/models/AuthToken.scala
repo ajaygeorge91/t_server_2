@@ -1,4 +1,4 @@
-package models
+package userauth.models
 
 import java.util.UUID
 

@@ -27,8 +27,8 @@ class ApplicationController @Inject() (
   assets: AssetsFinder
 ) extends BaseApplicationController(components) with I18nSupport {
 
-  def index = silhouette.UserAwareAction.async { implicit request =>
-    Future.successful(Ok("working...?!"))
+  def index = Action.async { implicit request =>
+    Future.successful(Ok(views.html.dashboard(None)))
   }
 
   def map1 = silhouette.UserAwareAction.async { implicit request =>

@@ -19,18 +19,22 @@ POST        /api/auth/password/reset/:token           userauth.controllers.Reset
 POST        /api/auth/password/change                 userauth.controllers.ChangePasswordController.submit
 
 GET         /api/auth/account/email/:email            userauth.controllers.ActivateAccountController.send(email: String)
-GET         /api/auth/account/activate/:token         userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
+GET         /api/auth/account/activate/:token                           userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 
 
-POST        /api/organization                      organization.controllers.OrganizationController.create
-GET         /api/organization                             organization.controllers.OrganizationController.list
-GET         /api/organization/:organizationId             organization.controllers.OrganizationController.find(organizationId:Long)
+POST        /api/organization                                           organization.controllers.OrganizationController.create
+GET         /api/organization                                           organization.controllers.OrganizationController.list
+GET         /api/organization/:organizationId                           organization.controllers.OrganizationController.find(organizationId:Long)
 
-POST        /api/organization/:organizationId/vehicle                  vehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
-GET         /api/organization/:organizationId/vehicle                         vehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
-GET         /api/organization/:organizationId/vehicle/:vehicleId              vehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
+POST        /api/organization/:organizationId/vehicle                   organizationvehicle.controllers.OrganizationVehicleController.create(organizationId:Long)
+GET         /api/organization/:organizationId/vehicle                   organizationvehicle.controllers.OrganizationVehicleController.list(organizationId:Long)
+GET         /api/organization/:organizationId/vehicle/:vehicleId        organizationvehicle.controllers.OrganizationVehicleController.find(organizationId:Long,vehicleId:Long)
+
+
+GET     /socket.io/         play.engineio.EngineIOController.endpoint(transport)
+POST    /socket.io/         play.engineio.EngineIOController.endpoint(transport)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                    controllers.Assets.versioned(file)
-->          /webjars                         webjars.Routes
+GET         /assets/*file                                               controllers.Assets.versioned(file)
+->          /webjars                                                    webjars.Routes

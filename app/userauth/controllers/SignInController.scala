@@ -11,6 +11,7 @@ import controllers.AssetsFinder
 import javax.inject.Inject
 import models.AuthResultDTO
 import net.ceedubs.ficus.Ficus._
+import notification.services.LiveNotificationService
 import org.webjars.play.WebJarsUtil
 import play.api.Configuration
 import play.api.i18n.{ I18nSupport, Messages }
@@ -39,6 +40,7 @@ class SignInController @Inject() (
   userService: UserService,
   credentialsProvider: CredentialsProvider,
   socialProviderRegistry: SocialProviderRegistry,
+  liveNotificationService: LiveNotificationService,
   configuration: Configuration,
   clock: Clock
 )(
@@ -65,6 +67,7 @@ class SignInController @Inject() (
             silhouette.env.eventBus.publish(LoginEvent(user, request))
             silhouette.env.authenticatorService.init(authenticator).map { token =>
               val result = AuthResultDTO(token, Some(user))
+              liveNotificationService.sendLive(s"user logged in; ${user.name.getOrElse("no name")}")
               success(result)
             }
           }

@@ -2,11 +2,12 @@ package userauth.daos
 
 import java.util.UUID
 
-import common.BaseRepo
+import common.{ BaseRepo, UserOrgHelperRepo }
 import javax.inject.Inject
-import models.AuthToken
 import AuthTokenDAOImpl._
+import org.janusgraph.core.JanusGraph
 import org.joda.time.DateTime
+import userauth.models.AuthToken
 import utils.executioncontexts.DatabaseExecutionContext
 
 import scala.collection.mutable
@@ -15,7 +16,9 @@ import scala.concurrent.Future
 /**
  * Give access to the [[AuthToken]] object.
  */
-class AuthTokenDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext) extends BaseRepo with AuthTokenDAO {
+class AuthTokenDAOImpl @Inject() (janusGraph: JanusGraph)(implicit ec: DatabaseExecutionContext)
+  extends BaseRepo
+  with AuthTokenDAO {
 
   /**
    * Finds a token by its ID.

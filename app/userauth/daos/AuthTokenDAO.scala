@@ -2,8 +2,8 @@ package userauth.daos
 
 import java.util.UUID
 
-import models.AuthToken
 import org.joda.time.DateTime
+import userauth.models.AuthToken
 
 import scala.concurrent.Future
 

@@ -5,7 +5,6 @@ import gremlin.scala._
 import org.janusgraph.core.{ JanusGraph, JanusGraphFactory }
 import utils.exceptions.VertexNotFound
 import utils.executioncontexts.DatabaseExecutionContext
-import vehicle.models.OrganizationVehicle
 
 import scala.util.{ Failure, Success, Try }
 
@@ -15,7 +14,7 @@ trait BaseRepo extends LazyLogging {
 
   val gremlinGraph: JanusGraph = JanusGraphFactory.build()
     //.set("storage.backend", "inmemory")
-    .set("storage.backend", "cql")
+    .set("storage.backend", "cassandra")
     .set("storage.hostname", "127.0.0.1")
     .open
 

@@ -9,7 +9,7 @@ import userauth.models.User
 
 case class AuthResultDTO(
   token: String,
-  userDTO: Option[User] = None
+  user: Option[User] = None
 )
 
 object AuthResultDTO {

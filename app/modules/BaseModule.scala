@@ -5,7 +5,7 @@ import net.codingwell.scalaguice.ScalaModule
 import organization.{ OrganizationDAO, OrganizationDAOImpl }
 import userauth.daos.{ AuthTokenDAO, AuthTokenDAOImpl }
 import userauth.services.{ AuthTokenService, AuthTokenServiceImpl }
-import vehicle.{ OrganizationVehicleDAO, OrganizationVehicleDAOImpl }
+import organizationvehicle.{ OrganizationVehicleDAO, OrganizationVehicleDAOImpl }
 
 /**
  * The base Guice module.

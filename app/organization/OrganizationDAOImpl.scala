@@ -4,6 +4,7 @@ import com.example.database.graph.schema.RelationTypes.EdgeLabels
 import common.{ BaseRepo, UserOrganizationHelper }
 import gremlin.scala._
 import javax.inject.Inject
+import org.janusgraph.core.JanusGraph
 import organization.models._
 import utils.exceptions.NoPermissionForRole
 import utils.executioncontexts.DatabaseExecutionContext

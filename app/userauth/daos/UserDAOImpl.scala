@@ -2,9 +2,10 @@ package userauth.daos
 
 import com.example.database.graph.schema.RelationTypes.EdgeLabels
 import com.mohiva.play.silhouette.api.LoginInfo
-import common.BaseRepo
+import common.{ BaseRepo, UserOrgHelperRepo }
 import gremlin.scala._
 import javax.inject.Inject
+import org.janusgraph.core.JanusGraph
 import userauth.models.{ CreateUser, LoginInfoVertex, User, UserVertex }
 import utils.exceptions.VertexNotFound
 import utils.executioncontexts.DatabaseExecutionContext
@@ -14,7 +15,10 @@ import scala.concurrent.{ Future, Promise }
 /**
  * Give access to the user object.
  */
-class UserDAOImpl @Inject() ()(implicit databaseExecutionContext: DatabaseExecutionContext) extends BaseRepo with UserDAO {
+class UserDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseExecutionContext: DatabaseExecutionContext)
+  extends BaseRepo
+  with UserOrgHelperRepo
+  with UserDAO {
 
   /**
    * Finds a user by its login info.

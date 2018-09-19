@@ -1,12 +1,13 @@
-package vehicle
+package organizationvehicle
 
 import com.example.database.graph.schema.RelationTypes.EdgeLabels
-import common.{ BaseRepo, OrganizationVehicleHelper, UserOrganizationHelper }
+import common.{ BaseRepo, UserOrgHelperRepo }
 import gremlin.scala._
 import javax.inject.Inject
+import org.janusgraph.core.JanusGraph
 import organization.models.Role
 import utils.executioncontexts.DatabaseExecutionContext
-import vehicle.models.{ CreateVehicle, _ }
+import organizationvehicle.models.{ CreateVehicle, _ }
 
 import scala.concurrent.{ Future, Promise }
 import scala.util.{ Failure, Success, Try }
@@ -14,11 +15,10 @@ import scala.util.{ Failure, Success, Try }
 /**
  * Give access to the user object.
  */
-class OrganizationVehicleDAOImpl @Inject() ()(implicit ec: DatabaseExecutionContext)
+class OrganizationVehicleDAOImpl @Inject() (janusGraph: JanusGraph)(implicit ec: DatabaseExecutionContext)
   extends BaseRepo
-  with OrganizationVehicleDAO
-  with UserOrganizationHelper
-  with OrganizationVehicleHelper {
+  with UserOrgHelperRepo
+  with OrganizationVehicleDAO {
 
   override def create(userId: Long, organizationId: Long, createVehicle: CreateVehicle): Future[models.Vehicle] = {
 

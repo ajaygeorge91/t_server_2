@@ -2,11 +2,10 @@ package models
 
 import play.api.libs.json.{ Json, OFormat }
 
-final case class Geo(
+case class Geo(
   latitude: Double,
   longitude: Double,
-  elevation: Option[Double]
-)
+  elevation: Option[Double])
 
 object Geo {
 

@@ -1,11 +1,11 @@
-package vehicle
+package organizationvehicle
 
 import javax.inject.Inject
-import vehicle.models.{ CreateVehicle, Vehicle }
+import organizationvehicle.models.{ CreateVehicle, Vehicle }
 
 import scala.concurrent.Future
 
-class VehicleService @Inject() (vehicleDAO: OrganizationVehicleDAO) {
+class OrganizationVehicleService @Inject() (vehicleDAO: OrganizationVehicleDAO) {
 
   def find(userId: Long, vehicleID: Long, organizationId: Long): Future[Option[Vehicle]] = vehicleDAO.find(userId, vehicleID, organizationId)
 

@@ -16,7 +16,6 @@ final case class OrganizationVertex(
   geo: Option[String],
   email: Option[String],
   telephone: Option[String],
-  publicAccess: Boolean,
   createdAt: String,
   updatedAt: String)
 
@@ -32,7 +31,6 @@ object OrganizationVertex {
       geo = createOrganization.geo.map(geo => Json.toJson(geo).toString()),
       email = createOrganization.email,
       telephone = createOrganization.telephone,
-      publicAccess = createOrganization.publicAccess,
       createdAt = DateTime.now().toString,
       updatedAt = DateTime.now().toString
     )
@@ -47,7 +45,6 @@ object OrganizationVertex {
       geo = organization.geo.map(geo => Json.toJson(geo).toString()),
       email = organization.email,
       telephone = organization.telephone,
-      publicAccess = organization.publicAccess,
       createdAt = organizationVertex.createdAt,
       updatedAt = DateTime.now().toString
     )
@@ -61,8 +58,7 @@ object OrganizationVertex {
       address = organizationVertex.address.map(address => Json.fromJson[Address](Json.parse(address)).get),
       geo = organizationVertex.geo.map(geo => Json.fromJson[Geo](Json.parse(geo)).get),
       email = organizationVertex.email,
-      telephone = organizationVertex.telephone,
-      publicAccess = organizationVertex.publicAccess
+      telephone = organizationVertex.telephone
     )
 
 }

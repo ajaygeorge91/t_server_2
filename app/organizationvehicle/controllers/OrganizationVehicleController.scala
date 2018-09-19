@@ -1,4 +1,4 @@
-package vehicle.controllers
+package organizationvehicle.controllers
 
 import com.mohiva.play.silhouette.api.Silhouette
 import com.typesafe.scalalogging.LazyLogging
@@ -7,8 +7,8 @@ import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{ Action, AnyContent, ControllerComponents }
 import utils.auth.DefaultEnv
-import vehicle.VehicleService
-import vehicle.models.CreateVehicle
+import organizationvehicle.OrganizationVehicleService
+import organizationvehicle.models.CreateVehicle
 
 import scala.concurrent.ExecutionContext
 import scala.util.control.NonFatal
@@ -16,7 +16,7 @@ import scala.util.control.NonFatal
 class OrganizationVehicleController @Inject() (
   components: ControllerComponents,
   silhouette: Silhouette[DefaultEnv],
-  vehicleService: VehicleService
+  vehicleService: OrganizationVehicleService
 )(implicit ex: ExecutionContext)
   extends BaseApplicationController(components) with I18nSupport with LazyLogging {
 

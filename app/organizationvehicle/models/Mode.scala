@@ -1,4 +1,4 @@
-package vehicle.models
+package organizationvehicle.models
 
 object Mode {
   val RENTED: String = "rented"

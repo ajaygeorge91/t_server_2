@@ -4,9 +4,9 @@ import java.util.UUID
 
 import com.mohiva.play.silhouette.api.util.Clock
 import javax.inject.Inject
-import models.AuthToken
 import org.joda.time.DateTimeZone
 import userauth.daos.AuthTokenDAO
+import userauth.models.AuthToken
 import utils.executioncontexts.ServiceExecutionContext
 
 import scala.concurrent.Future

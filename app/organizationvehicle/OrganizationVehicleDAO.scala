@@ -1,6 +1,6 @@
-package vehicle
+package organizationvehicle
 
-import vehicle.models.{ CreateVehicle, Vehicle }
+import organizationvehicle.models.{ CreateVehicle, Vehicle }
 
 import scala.concurrent.Future
 

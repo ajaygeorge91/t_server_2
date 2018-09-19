@@ -2,7 +2,7 @@ package organization.models
 
 object Role {
   val ADMIN: String = "admin"
-  val STAFF: String = "staff"
+  val READ: String = "read"
 
-  val all: List[String] = List(ADMIN, STAFF)
+  val all: List[String] = List(ADMIN, READ)
 }

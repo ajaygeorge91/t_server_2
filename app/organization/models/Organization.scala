@@ -11,8 +11,7 @@ final case class Organization(
   address: Option[Address],
   geo: Option[Geo],
   email: Option[String],
-  telephone: Option[String],
-  publicAccess: Boolean
+  telephone: Option[String]
 )
 
 object Organization {

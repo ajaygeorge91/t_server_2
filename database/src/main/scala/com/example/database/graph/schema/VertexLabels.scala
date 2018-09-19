@@ -9,5 +9,6 @@ object VertexLabels {
   final val Address: String = "address"
   final val Organization: String = "organization"
   final val Vehicle: String = "vehicle"
+  final val Trip: String = "trip"
 
 }

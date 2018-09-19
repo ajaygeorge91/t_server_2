@@ -1,34 +1,26 @@
 package userauth.daos
 
-import java.util.UUID
-
 import com.example.database.graph.schema.RelationTypes.EdgeLabels
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.InMemoryAuthInfoDAO
 import common.BaseRepo
-import javax.inject.Inject
-import models.AuthToken
-import org.joda.time.DateTime
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
 import gremlin.scala._
-import play.api.libs.ws.WSResponse
-import play.api.libs.json.{ JsPath, Reads, Writes }
-import userauth.daos.AuthTokenDAOImpl._
-import userauth.models.{ LoginInfoVertex, PasswordInfoVertex, UserVertex }
+import javax.inject.Inject
+import org.janusgraph.core.JanusGraph
+import userauth.models.{ LoginInfoVertex, PasswordInfoVertex }
 import utils.exceptions.VertexNotFound
 import utils.executioncontexts.DatabaseExecutionContext
 
-import scala.concurrent
 import scala.concurrent.{ Future, Promise }
 
 /**
  * The DAO to store the password information.
  */
-class PasswordInfoDAOImpl @Inject() ()(implicit databaseExecutionContext: DatabaseExecutionContext)
-  extends InMemoryAuthInfoDAO[PasswordInfo]
-  with BaseRepo {
+class PasswordInfoDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseExecutionContext: DatabaseExecutionContext)
+  extends InMemoryAuthInfoDAO[PasswordInfo] {
+
+  implicit val graph: ScalaGraph = janusGraph.asScala
 
   /**
    * Finds the auth info which is linked with the specified login info.

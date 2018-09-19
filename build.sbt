@@ -52,6 +52,7 @@ lazy val app = (project in file("."))
     commonSettings,
     libraryDependencies ++= Seq(
       ehcache,
+      Library.PlaySocketIo,
       filters
     ) ++ commonDependencies ++ Library.Silhouette ++ Library.Web ++ Library.Mailer
   )

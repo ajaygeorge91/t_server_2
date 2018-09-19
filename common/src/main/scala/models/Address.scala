@@ -2,13 +2,12 @@ package models
 
 import play.api.libs.json.{ Json, OFormat }
 
-final case class Address(
+case class Address(
   addressLocality: String,
-  streetAddress: Option[String],
-  addressRegion: Option[String],
-  addressCountry: Option[String],
-  postalCode: Option[String]
-)
+  streetAddress: String,
+  addressRegion: String,
+  addressCountry: String,
+  postalCode: String)
 
 object Address {
 
