@@ -6,7 +6,7 @@ import common.BaseApplicationController
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{ Action, AnyContent, ControllerComponents }
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 import organizationvehicle.OrganizationVehicleService
 import organizationvehicle.models.CreateVehicle
 
@@ -15,7 +15,7 @@ import scala.util.control.NonFatal
 
 class OrganizationVehicleController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   vehicleService: OrganizationVehicleService
 )(implicit ex: ExecutionContext)
   extends BaseApplicationController(components) with I18nSupport with LazyLogging {

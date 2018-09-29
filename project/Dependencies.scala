@@ -48,5 +48,6 @@ object Library {
 
   final val PlaySocketIo = "com.lightbend.play" % "play-socket-io_2.12" % "1.0.0-beta-2"
   final val QuartzScheduler =  "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.1-akka-2.5.x"
+  final val Mqtt =  "com.lightbend.akka" %% "akka-stream-alpakka-mqtt" % "0.20"
 
 }

@@ -7,7 +7,7 @@ import userauth.models.User
 /**
  * The default env.
  */
-trait DefaultEnv extends Env {
+trait JwtEnv extends Env {
   type I = User
   type A = JWTAuthenticator
 }

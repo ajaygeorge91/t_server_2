@@ -10,15 +10,15 @@ import organization.OrganizationService
 import organization.models.CreateOrganization
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.ExecutionContext
 import scala.util.control.NonFatal
 
 class OrganizationController @Inject() (
-  components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
-  organizationService: OrganizationService
+                                         components: ControllerComponents,
+                                         silhouette: Silhouette[JwtEnv],
+                                         organizationService: OrganizationService
 )(
   implicit
   webJarsUtil: WebJarsUtil,

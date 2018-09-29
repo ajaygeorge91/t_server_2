@@ -11,7 +11,7 @@ import play.api.i18n.{ I18nSupport, Messages }
 import play.api.libs.json.Json
 import play.api.mvc.ControllerComponents
 import userauth.forms.ChangePasswordForm
-import utils.auth.{ DefaultEnv, WithProvider }
+import utils.auth.{ JwtEnv, WithProvider }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -27,7 +27,7 @@ import scala.concurrent.{ ExecutionContext, Future }
  */
 class ChangePasswordController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   credentialsProvider: CredentialsProvider,
   authInfoRepository: AuthInfoRepository,
   passwordHasherRegistry: PasswordHasherRegistry
@@ -41,7 +41,7 @@ class ChangePasswordController @Inject() (
    *
    * @return The result to display.
    */
-  def submit = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)).async { implicit request =>
+  def submit = silhouette.SecuredAction(WithProvider[JwtEnv#A](CredentialsProvider.ID)).async { implicit request =>
     ChangePasswordForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(Json.obj("errors" -> form.errors.map { _.messages.mkString(", ") }))),
       password => {

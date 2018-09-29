@@ -10,7 +10,7 @@ import play.api.libs.mailer.{ Email, MailerClient }
 import play.api.mvc.ControllerComponents
 import userauth.forms.ForgotPasswordForm
 import userauth.services.{ AuthTokenService, UserService }
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -26,7 +26,7 @@ import scala.concurrent.{ ExecutionContext, Future }
  */
 class ForgotPasswordController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   userService: UserService,
   authTokenService: AuthTokenService,
   mailerClient: MailerClient

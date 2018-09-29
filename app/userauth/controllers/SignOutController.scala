@@ -6,7 +6,7 @@ import common.BaseApplicationController
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{ Action, AnyContent, ControllerComponents }
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 /**
  * The basic application controller.
@@ -16,7 +16,7 @@ import utils.auth.DefaultEnv
  */
 class SignOutController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv]
+  silhouette: Silhouette[JwtEnv]
 ) extends BaseApplicationController(components) with I18nSupport {
 
   /**
@@ -24,7 +24,7 @@ class SignOutController @Inject() (
    *
    * @return The result to display.
    */
-  def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+  def signOut: Action[AnyContent] = silhouette.SecuredAction.async { implicit request: SecuredRequest[JwtEnv, AnyContent] =>
     silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
     silhouette.env.authenticatorService.discard(request.authenticator, success("Logged out"))
   }

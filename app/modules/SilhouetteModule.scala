@@ -25,7 +25,7 @@ import play.api.Configuration
 import play.api.libs.ws.WSClient
 import userauth.daos.{ UserDAO, UserDAOImpl }
 import userauth.services.{ UserService, UserServiceImpl }
-import utils.auth.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, DefaultEnv }
+import utils.auth.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, JwtEnv }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -38,7 +38,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * Configures the module.
    */
   def configure() {
-    bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
+    bind[Silhouette[JwtEnv]].to[SilhouetteProvider[JwtEnv]]
     bind[UnsecuredErrorHandler].to[CustomUnsecuredErrorHandler]
     bind[SecuredErrorHandler].to[CustomSecuredErrorHandler]
     bind[UserService].to[UserServiceImpl]
@@ -75,8 +75,8 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   def provideEnvironment(
     userService: UserService,
     authenticatorService: AuthenticatorService[JWTAuthenticator],
-    eventBus: EventBus): Environment[DefaultEnv] =
-    Environment[DefaultEnv](userService, authenticatorService, Seq(), eventBus)
+    eventBus: EventBus): Environment[JwtEnv] =
+    Environment[JwtEnv](userService, authenticatorService, Seq(), eventBus)
 
   /**
    * Provides the social provider registry.

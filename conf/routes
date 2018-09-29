@@ -4,6 +4,7 @@
 
 # Home page
 GET         /                                controllers.ApplicationController.index
+GET         /api/user                                controllers.ApplicationController.user
 GET         /map1                            controllers.ApplicationController.map1
 GET         /map2                            controllers.ApplicationController.map2
 
@@ -19,7 +20,7 @@ POST        /api/auth/password/reset/:token           userauth.controllers.Reset
 POST        /api/auth/password/change                 userauth.controllers.ChangePasswordController.submit
 
 GET         /api/auth/account/email/:email            userauth.controllers.ActivateAccountController.send(email: String)
-GET         /api/auth/account/activate/:token                           userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
+GET         /api/auth/account/activate/:token         userauth.controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 
 

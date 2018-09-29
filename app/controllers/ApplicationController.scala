@@ -5,8 +5,9 @@ import common.BaseApplicationController
 import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
+import play.api.libs.json.Json
 import play.api.mvc.ControllerComponents
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.Future
 
@@ -20,7 +21,7 @@ import scala.concurrent.Future
  */
 class ApplicationController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv]
+  silhouette: Silhouette[JwtEnv]
 )(
   implicit
   webJarsUtil: WebJarsUtil,
@@ -29,6 +30,10 @@ class ApplicationController @Inject() (
 
   def index = Action.async { implicit request =>
     Future.successful(Ok(views.html.dashboard(None)))
+  }
+
+  def user = silhouette.SecuredAction.async { implicit request =>
+    Future.successful(Ok(Json.toJson(request.identity)))
   }
 
   def map1 = silhouette.UserAwareAction.async { implicit request =>

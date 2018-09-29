@@ -12,7 +12,7 @@ import play.api.i18n.{ I18nSupport, Messages }
 import play.api.libs.json.JsValue
 import play.api.mvc._
 import userauth.services.UserService
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -28,7 +28,7 @@ import scala.concurrent.{ ExecutionContext, Future }
  */
 class SocialAuthController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   userService: UserService,
   authInfoRepository: AuthInfoRepository,
   socialProviderRegistry: SocialProviderRegistry

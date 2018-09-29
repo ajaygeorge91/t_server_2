@@ -14,7 +14,7 @@ import play.api.i18n.{ I18nSupport, Messages }
 import play.api.mvc.ControllerComponents
 import userauth.forms.ResetPasswordForm
 import userauth.services.{ AuthTokenService, UserService }
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -31,7 +31,7 @@ import scala.concurrent.{ ExecutionContext, Future }
  */
 class ResetPasswordController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   userService: UserService,
   authInfoRepository: AuthInfoRepository,
   passwordHasherRegistry: PasswordHasherRegistry,

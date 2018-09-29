@@ -7,20 +7,20 @@ import akka.stream.scaladsl.{ BroadcastHub, Flow, Keep, Sink, Source }
 import com.mohiva.play.silhouette.api.{ HandlerResult, Silhouette }
 import com.typesafe.scalalogging.LazyLogging
 import javax.inject.{ Inject, Provider, Singleton }
-import play.api.Logger
 import play.api.mvc.Results._
 import play.api.mvc.{ AnyContentAsEmpty, Request }
+import play.api.{ Configuration, Logger }
 import play.engineio.EngineIOController
 import play.socketio.scaladsl.SocketIO
-import play.socketio.scaladsl.SocketIOEventCodec.{ SocketIOEventsDecoder, SocketIOEventsEncoder }
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class SocketIOEngine @Inject() (
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   socketIO: SocketIO,
+  configuration: Configuration,
   notificationEventBus: NotificationEventBus)(
   implicit
   val ec: ExecutionContext,

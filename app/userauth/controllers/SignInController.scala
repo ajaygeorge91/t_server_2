@@ -18,7 +18,7 @@ import play.api.i18n.{ I18nSupport, Messages }
 import play.api.mvc.{ Action, ControllerComponents }
 import userauth.models.SignIn
 import userauth.services.UserService
-import utils.auth.DefaultEnv
+import utils.auth.JwtEnv
 
 import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
@@ -36,7 +36,7 @@ import scala.concurrent.{ ExecutionContext, Future }
  */
 class SignInController @Inject() (
   components: ControllerComponents,
-  silhouette: Silhouette[DefaultEnv],
+  silhouette: Silhouette[JwtEnv],
   userService: UserService,
   credentialsProvider: CredentialsProvider,
   socialProviderRegistry: SocialProviderRegistry,
