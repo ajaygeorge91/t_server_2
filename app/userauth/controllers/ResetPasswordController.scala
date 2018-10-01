@@ -55,9 +55,7 @@ class ResetPasswordController @Inject() (
       maybeToken match {
         case Some(authToken) =>
           ResetPasswordForm.form.bindFromRequest.fold(
-            form => Future.successful(badRequest(form.errors.map {
-              _.messages.mkString(", ")
-            }.mkString(";"))),
+            form => Future.successful(badRequest(form.errors)),
             password => userService.retrieve(authToken.userID).flatMap { maybeUser =>
               logger.info(s"Maybe user returned: $maybeUser")
               maybeUser match {

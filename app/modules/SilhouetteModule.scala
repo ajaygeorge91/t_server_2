@@ -23,7 +23,7 @@ import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
 import play.api.libs.ws.WSClient
-import userauth.daos.{ UserDAO, UserDAOImpl }
+import userauth.daos.{ PasswordInfoDAOImpl, UserDAO, UserDAOImpl }
 import userauth.services.{ UserService, UserServiceImpl }
 import utils.auth.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, JwtEnv }
 
@@ -49,7 +49,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[Clock].toInstance(Clock())
 
     // TODO Replace this with the bindings to your concrete DAOs
-    bind[DelegableAuthInfoDAO[PasswordInfo]].toInstance(new InMemoryAuthInfoDAO[PasswordInfo])
+    bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAOImpl]
     bind[DelegableAuthInfoDAO[OAuth2Info]].toInstance(new InMemoryAuthInfoDAO[OAuth2Info])
     bind[DelegableAuthInfoDAO[OpenIDInfo]].toInstance(new InMemoryAuthInfoDAO[OpenIDInfo])
   }

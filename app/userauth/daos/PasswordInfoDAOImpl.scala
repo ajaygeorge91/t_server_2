@@ -9,6 +9,7 @@ import gremlin.scala._
 import javax.inject.Inject
 import org.janusgraph.core.JanusGraph
 import userauth.models.{ LoginInfoVertex, PasswordInfoVertex }
+import utils.Logger
 import utils.exceptions.VertexNotFound
 import utils.executioncontexts.DatabaseExecutionContext
 
@@ -18,7 +19,7 @@ import scala.concurrent.{ Future, Promise }
  * The DAO to store the password information.
  */
 class PasswordInfoDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseExecutionContext: DatabaseExecutionContext)
-  extends InMemoryAuthInfoDAO[PasswordInfo] {
+  extends InMemoryAuthInfoDAO[PasswordInfo] with Logger {
 
   implicit val graph: ScalaGraph = janusGraph.asScala
 
@@ -35,6 +36,7 @@ class PasswordInfoDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseEx
       .has(LoginInfoVertex.providerKey, loginInfo.providerKey)
       .out(EdgeLabels.HasPasswordInfo).headOption().map { passwordVertex =>
 
+        logger.error(passwordVertex.toString)
         PasswordInfoVertex.toPasswordInfo(passwordVertex.toCC[PasswordInfoVertex])
       }
   }
@@ -55,8 +57,10 @@ class PasswordInfoDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseEx
         .has(LoginInfoVertex.providerID, loginInfo.providerID)
         .has(LoginInfoVertex.providerKey, loginInfo.providerKey)
         .headOption().map { loginInfoVertex =>
+          logger.error(loginInfoVertex.toString)
           val createdPasswordInfo = graph + PasswordInfoVertex.fromPasswordInfo(passwordInfo)
           loginInfoVertex --- EdgeLabels.HasPasswordInfo --> createdPasswordInfo
+          graph.tx().commit()
           createdPasswordInfo
         }
     }
@@ -85,6 +89,8 @@ class PasswordInfoDAOImpl @Inject() (janusGraph: JanusGraph)(implicit databaseEx
         .has(LoginInfoVertex.providerKey, loginInfo.providerKey)
         .out(EdgeLabels.HasPasswordInfo).headOption().map { passwordVertex =>
           val updatedPasswordInfo = passwordVertex.updateAs[PasswordInfoVertex](p => PasswordInfoVertex.update(p, passwordInfo))
+
+          graph.tx().commit()
           updatedPasswordInfo
         }
     }

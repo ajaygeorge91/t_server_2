@@ -54,7 +54,7 @@ class ChangePasswordController @Inject() (
           }
         }.recover {
           case e: ProviderException =>
-            failure(Messages("current.password.invalid"))
+            badRequest(Messages("current.password.invalid"))
         }
       }
     )

@@ -76,7 +76,7 @@ class SignInController @Inject() (
     }.recover {
       case e: ProviderException =>
         logger.error(e.getMessage, e)
-        failure(Messages("invalid.credentials"))
+        unAuthorized(Messages("invalid.credentials"))
     }
   }
 

@@ -64,7 +64,7 @@ class SocialAuthController @Inject() (
     }).recover {
       case e: ProviderException =>
         logger.error("Unexpected provider error", e)
-        failure(Messages("could.not.authenticate"))
+        unAuthorized(Messages("could.not.authenticate"))
     }
   }
 
@@ -89,10 +89,10 @@ class SocialAuthController @Inject() (
           }).recover {
             case e: ProviderException =>
               logger.error("Unexpected provider error", e)
-              failure(Messages("could.not.authenticate"))
+              unAuthorized(Messages("could.not.authenticate"))
           }
         case _ =>
-          Future.successful(failure("Bad OAuth2 json."))
+          Future.successful(badRequest("Bad OAuth2 json."))
       }
   }
 

@@ -4,14 +4,15 @@
 
 # Home page
 GET         /                                controllers.ApplicationController.index
-GET         /api/user                                controllers.ApplicationController.user
 GET         /map1                            controllers.ApplicationController.map1
 GET         /map2                            controllers.ApplicationController.map2
 
-GET         /api/auth/signOut                         userauth.controllers.SignOutController.signOut
 
-POST        /api/auth/signIn                 userauth.controllers.SignInController.submit
-POST        /api/auth/signUp                 userauth.controllers.SignUpController.submit
+GET         /api/user                                controllers.ApplicationController.user
+POST        /api/users                       userauth.controllers.SignUpController.submit
+POST        /api/users/login                 userauth.controllers.SignInController.submit
+GET         /api/users/logout                         userauth.controllers.SignOutController.signOut
+
 POST        /api/auth/facebook               userauth.controllers.SocialAuthController.authenticateFB()
 POST        /api/auth/:provider              userauth.controllers.SocialAuthController.authenticate(provider :String)
 

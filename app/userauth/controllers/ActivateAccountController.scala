@@ -78,9 +78,10 @@ class ActivateAccountController @Inject() (
           userService.update(user.copy(activated = true)).map { _ =>
             success(Messages("account.activated"))
           }
-        case _ => Future.successful(failure(Messages("invalid.activation.link")))
+        case _ => Future.successful(apiFailureResponse(CONFLICT, Map("message" -> Messages("invalid.activation.link"))))
       }
-      case None => Future.successful(failure(Messages("invalid.activation.link")))
+      case None => Future.successful(apiFailureResponse(CONFLICT, Map("message" -> Messages("invalid.activation.link"))))
     }
   }
 }
+

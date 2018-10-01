@@ -57,7 +57,7 @@ class SignUpController @Inject() (
     val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
     userService.retrieve(loginInfo).flatMap {
       case Some(user) =>
-        Future.successful(failure(Messages("email.already.exist")))
+        Future.successful(apiFailureResponse(CONFLICT, Map("message" -> Messages("email.already.exist"))))
       case None =>
         val authInfo = passwordHasherRegistry.current.hash(data.password)
         val user = CreateUser(
